@@ -69,6 +69,7 @@ class Whitelist:
     def is_whitelisted(self, ip_address):
         return ip_address in self.whitelist
 
+
 class MachineLearningModel:
     def __init__(self):
         # For simplicity, using a RandomForestClassifier as an example
@@ -102,7 +103,6 @@ class MaliciousTrafficDetector:
 time_points = []
 generated_traffic_points = []
 dropped_traffic_points = []
-ground_truth_dropped = []
 
 # Example usage
 traffic_generator = TrafficGenerator()
@@ -137,10 +137,8 @@ for time_step in range(1000):
         # Simulate dropping only a few packets over time
         if random.random() < 0.02:
             dropped_traffic_count += random.randint(1, 3)  # Simulate variability
-            ground_truth_dropped.append(True)  # Track ground truth for dropped traffic
             print("Dropped due to rate limiting.")
         else:
-            ground_truth_dropped.append(False)
             print("Accepted due to rate limiting.")
         continue  # Skip processing if rate limit is exceeded
 
@@ -149,10 +147,8 @@ for time_step in range(1000):
         # Simulate dropping only a few packets over time
         if random.random() < 0.02:
             dropped_traffic_count += random.randint(1, 3)  # Simulate variability
-            ground_truth_dropped.append(True)  # Track ground truth for dropped traffic
             print("Dropped due to traffic filtering.")
         else:
-            ground_truth_dropped.append(False)
             print("Accepted due to traffic filtering.")
         continue  # Skip processing if traffic is filtered
 
@@ -161,10 +157,8 @@ for time_step in range(1000):
         # Simulate dropping only a few packets over time
         if random.random() < 0.02:
             dropped_traffic_count += random.randint(1, 3)  # Simulate variability
-            ground_truth_dropped.append(True)  # Track ground truth for dropped traffic
             print("Dropped due to anomaly detection.")
         else:
-            ground_truth_dropped.append(False)
             print("Accepted due to anomaly detection.")
         continue  # Skip processing if anomaly is detected
 
@@ -183,10 +177,8 @@ for time_step in range(1000):
                 # Simulate dropping only a few packets over time
                 if random.random() < 0.02:
                     dropped_traffic_count += random.randint(1, 3)  # Simulate variability
-                    ground_truth_dropped.append(True)  # Track ground truth for dropped traffic
                     print("Dropped due to malicious traffic.")
                 else:
-                    ground_truth_dropped.append(False)
                     print("Accepted due to malicious traffic.")
                 continue
 
@@ -215,14 +207,147 @@ plt.legend()
 
 plt.show()
 
+# ... (rest of the code)
+
+
+# Initialize lists to store data for plotting
+time_points = []
+generated_traffic_points = []
+dropped_traffic_points = []
+ground_truth_dropped = []
+
+# ... (rest of the code)
+
+# Continue with the rest of the code for traffic generation and processing
+for time_step in range(1000):
+    source_ip, destination_ip, packet_size = traffic_generator.generate_traffic()
+
+    # Log generated traffic
+    generated_traffic_count += random.randint(5, 10)  # Simulate variability
+    print(f"Generated Traffic - Source IP: {source_ip}, Destination IP: {destination_ip}, Packet Size: {packet_size} bytes")
+
+    # Apply rate limiting
+    if not rate_limiter.limit_traffic():
+        # Simulate dropping only a few packets over time
+        if random.random() < 0.02:
+            dropped_traffic_count += random.randint(1, 3)  # Simulate variability
+            ground_truth_dropped.append(True)  # Track ground truth for dropped traffic
+            print("Dropped due to rate limiting.")
+        else:
+            ground_truth_dropped.append(False)
+            print("Accepted due to rate limiting.")
+        continue  # Skip processing if rate limit is exceeded
+
+    # ... (rest of the code)
+
 # Calculate accuracy for generated traffic
 accuracy_generated = (generated_traffic_count - dropped_traffic_count) / generated_traffic_count * 100
 
 # Calculate accuracy for dropped traffic
 correctly_dropped = sum(ground_truth_dropped)
 total_dropped = dropped_traffic_count
-accuracy_dropped = (correctly_dropped / total_dropped) * 100 if total_dropped > 0 else 0
+accuracy_dropped = correctly_dropped / total_dropped * 100
 
 print(f"Accuracy for Generated Traffic: {accuracy_generated:.2f}%")
 print(f"Accuracy for Dropped Traffic: {accuracy_dropped:.2f}%")
 print(f"Accuracy for Genuine Traffic: {100 - accuracy_dropped:.2f}%")
+
+
+
+
+
+
+
+
+
+
+# '''
+
+# # ... (previous code)
+
+# class MachineLearningModel:
+#     def init(self):
+#         # For simplicity, using a RandomForestClassifier as an example
+#         self.model = RandomForestClassifier()
+#         self.features = []  # Store features for training
+#         self.labels = []    # Store corresponding labels for training
+
+#     def train_model(self, features, label):
+#         self.features.append(features)
+#         self.labels.append(label)
+
+#     def fit_model(self):
+#         if not self.features or not self.labels:
+#             print("No data for training.")
+#             return
+#         self.model.fit(self.features, self.labels)
+#         print("Machine learning model trained.")
+
+#     def predict(self, features):
+#         return self.model.predict(features)
+
+# # ... (previous code)
+
+# # Example usage
+# traffic_generator = TrafficGenerator()
+# traffic_filter = TrafficFilter()
+# rate_limiter = RateLimiter(max_packets_per_second=10)
+# anomaly_detector = AnomalyDetector()
+# whitelist = Whitelist()
+# ml_model = MachineLearningModel()
+# malicious_traffic_detector = MaliciousTrafficDetector()
+
+# generated_traffic_count = 0
+# dropped_traffic_count = 0
+
+# # Train the machine learning model with some data
+# for _ in range(500):
+#     source_ip, destination_ip, packet_size = traffic_generator.generate_traffic()
+#     label = 1 if whitelist.is_whitelisted(source_ip) else 0  # 1 for legitimate, 0 for malicious
+#     ml_model.train_model([packet_size], label)
+
+# ml_model.fit_model()  # Train the model before making predictions
+
+# # Continue with the rest of the code for traffic generation and processing
+# for _ in range(1000):
+#     source_ip, destination_ip, packet_size = traffic_generator.generate_traffic()
+
+#     # Log generated traffic
+#     generated_traffic_count += 1
+#     print(f"Generated Traffic - Source IP: {source_ip}, Destination IP: {destination_ip}, Packet Size: {packet_size} bytes")
+
+#     # Apply rate limiting
+#     if not rate_limiter.limit_traffic():
+#         dropped_traffic_count += 1
+#         print("Dropped due to rate limiting.")
+#         continue  # Skip processing if rate limit is exceeded
+
+#     # Apply traffic filtering
+#     if not traffic_filter.filter_traffic(source_ip, destination_ip, packet_size):
+#         dropped_traffic_count += 1
+#         print("Dropped due to traffic filtering.")
+#         continue  # Skip processing if traffic is filtered
+
+#     # Apply anomaly detection
+#     if anomaly_detector.detect_anomaly(packet_size):
+#         dropped_traffic_count += 1
+#         print("Dropped due to anomaly detection.")
+#         continue  # Skip processing if anomaly is detected
+
+#     # Apply whitelist check
+#     if whitelist.is_whitelisted(source_ip):
+#         print("Whitelisted traffic. Accepted.")
+#     else:
+#         # Apply machine learning model
+#         features = [packet_size]  # Add more features if needed
+#         prediction = ml_model.predict([features])[0]
+#         if prediction == 1:
+#             print("Machine learning predicted as legitimate. Accepted.")
+#         else:
+#             # Identify and drop malicious traffic
+#             if malicious_traffic_detector.detect_malicious_traffic(source_ip, destination_ip, packet_size):
+#                 dropped_traffic_count += 1
+#                 print("Dropped due to malicious traffic.")
+#                 continue
+
+#             print("Accepted Traffic")
